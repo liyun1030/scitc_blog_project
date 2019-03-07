@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.scitc.blog.dao.UserBlogDao">
+	<resultMap id="BaseResultMap"
+		type="cn.com.scitc.blog.domain.UserBlog">
+		<result column="blogid" property="blogid" />
+		<result column="userid" property="userid" />
+		<result column="username" property="username" />
+		<result column="title" property="title" />
+		<result column="blog" property="blog" />
+		<result column="date" property="date" />
+	</resultMap>
+
+	<!-- 查询登录用户的主页博客列表 -->
+	<select id="selectALLByUserid" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		SELECT * FROM blog WHERE userid = #{userid}
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT COUNT(* ) FROM blog WHERE userid =#{userid}
+	</select>
+
+	<!--listed分页查询 -->
+	<select id="pagedquery" resultMap="BaseResultMap">
+		SELECT * FROM blog WHERE userid=#{userid} ORDER BY blogid DESC LIMIT #{offset},#{pagesize}
+	</select>
+	
+	<!-- 搜索 -->
+	<select id="search" resultMap="BaseResultMap">
+		SELECT * FROM blog WHERE title LIKE "%"#{keyword}"%" ORDER BY blogid DESC LIMIT #{offset},#{pagesize}
+	</select>
+	<!-- 搜索后有几条数据 -->
+	<select id="searchcount" resultType="java.lang.Integer">
+		SELECT COUNT(* ) FROM blog WHERE title LIKE "%"#{keyword}"%"
+	</select>
+	
+		<!-- 查询一共有几条数据 -->
+	<select id="countAll" resultType="java.lang.Integer">
+		SELECT COUNT(* ) FROM blog 
+	</select>
+		<!--unlisetd分页查询 -->
+	<select id="allBlogPaged" resultMap="BaseResultMap">
+		SELECT * FROM blog ORDER BY blogid DESC LIMIT #{offset},#{pagesize}
+	</select>
+	<!--根据blogid来username-->
+	<select id="findNameByBlogid" resultType="java.lang.String">
+		SELECT `user`.username FROM `user`,blog WHERE blog.userid=`user`.userid AND blogid =#{blogid}
+	</select>
+
+</mapper>

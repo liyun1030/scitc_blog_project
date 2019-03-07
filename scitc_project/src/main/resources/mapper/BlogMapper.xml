@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.scitc.blog.dao.BlogDao">
+	<resultMap id="BaseResultMap" type="cn.com.scitc.blog.domain.Blog">
+		<result column="blogid" property="blogid" />
+		<result column="userid" property="userid" />
+		<result column="title" property="title" />
+		<result column="blog" property="blog" />
+		<result column="date" property="date" />
+	</resultMap>
+
+	<parameterMap id="Blog"
+		type="cn.com.scitc.blog.domain.Blog" />
+	<!-- 查询单条记录 -->
+	<select id="findBlogByID" parameterType="int"
+		resultMap="BaseResultMap">
+		SELECT * FROM blog WHERE blogid = #{blogid}
+	</select>
+
+	<!-- 查询列表 -->
+	<select id="findnewblog" resultMap="BaseResultMap">
+		SELECT * FROM blog ORDER BY
+		blogid DESC LIMIT 10
+	</select>
+
+	<insert id="insertBlog" parameterMap="Blog">
+		insert into
+		blog(blogid,userid,title,blog,date)
+		values(#{blogid},#{userid},#{title},#{blog},#{date})
+	</insert>
+</mapper>
